@@ -1,0 +1,22 @@
+---
+import HomeBento from "../components/HomeBento.astro";
+import HomeHero from "../components/HomeHero.astro";
+import ArticleStack from "../components/islands/ArticleStack";
+import TextReveal from "../components/islands/TextReveal";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getAllPosts, getRecentPosts, getTagCounts, summarizePost } from "../lib/posts";
+
+const posts = await getAllPosts();
+const recentPosts = getRecentPosts(posts, 4);
+const tags = getTagCounts(posts);
+const stackPosts = recentPosts.map(summarizePost);
+const revealText =
+  "在雪地里寻找梅花，也是在混沌中寻找秩序。写作整理技术，阅读校准判断，系统保存耐心，让日常思考慢慢长出自己的形状。";
+---
+
+<BaseLayout canonicalPath="/">
+  <HomeHero />
+  <HomeBento posts={recentPosts} tags={tags} />
+  <TextReveal text={revealText} client:visible />
+  <ArticleStack posts={stackPosts} client:visible />
+</BaseLayout>

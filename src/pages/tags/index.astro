@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllPosts, getTagCounts } from "../../lib/posts";
+import { tagSlug, withBase } from "../../lib/site";
+
+const posts = await getAllPosts();
+const tags = getTagCounts(posts);
+---
+
+<BaseLayout title="标签" description="按标签浏览 ithkeen 的博客文章。" canonicalPath="/tags/">
+  <section class="archive-head">
+    <div class="container">
+      <h1 class="page-title">标签</h1>
+      <p class="lede">用少量标签保留文章之间的联系，像雪地里互相靠近的足迹。</p>
+    </div>
+  </section>
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      {
+        tags.length === 0 ? (
+          <p class="empty-state">还没有发布的文章。</p>
+        ) : (
+          <div class="tag-index">
+            {tags.map(({ tag, count }) => (
+              <a href={withBase(`/tags/${tagSlug(tag)}/`)}>
+                <strong>{tag}</strong>
+                <span class="meta">{count} 篇</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

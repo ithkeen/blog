@@ -1,0 +1,114 @@
+---
+import ReadingNotesCarousel from "./islands/ReadingNotesCarousel";
+import snowPlumHero from "../assets/snow-plum-hero.png";
+import { formatDate, type BlogPost } from "../lib/posts";
+import { tagSlug, withBase } from "../lib/site";
+
+type TagCount = { tag: string; count: number };
+
+type Props = {
+  posts: BlogPost[];
+  tags: TagCount[];
+};
+
+const { posts, tags } = Astro.props;
+const [featured, ...restPosts] = posts;
+const slices = restPosts.slice(0, 3);
+const topTags = tags.slice(0, 5);
+const notes = [
+  "读书不是为了记住，而是为了理解世界的更多可能。",
+  "写作把模糊的念头放在纸面上，让它接受时间的检查。",
+  "系统不是把生活收紧，而是给注意力留出余地。",
+];
+---
+
+<section class="section-pad interest-section" aria-labelledby="interest-title">
+  <div class="container">
+    <h2 class="eyeless-title" id="interest-title">
+      在复杂度中<br />寻找秩序
+    </h2>
+    <p class="lede">写作、阅读、构建系统，让思考在时间中沉淀。</p>
+
+    <div class="bento-grid" aria-label="近期文章、标签和阅读札记">
+      <article class="bento-cell bento-feature">
+        {
+          featured ? (
+            <a class="feature-link" href={withBase(`/posts/${featured.id}/`)}>
+              <div class="feature-image" aria-hidden="true"></div>
+              <div class="feature-copy">
+                <h2>{featured.data.title}</h2>
+                <p>{featured.data.description}</p>
+                <p class="meta">{formatDate(featured.data.pubDate)} <span class="arrow-line">-></span></p>
+              </div>
+            </a>
+          ) : (
+            <div class="feature-copy">
+              <h2>还没有发布的文章。</h2>
+              <p>写作开始时，这里会出现第一篇文章。</p>
+            </div>
+          )
+        }
+      </article>
+
+      <div class="bento-cell bento-accordion">
+        <div class="article-slices">
+          {
+            slices.map((post) => (
+              <a
+                class="article-slice"
+                href={withBase(`/posts/${post.id}/`)}
+                style={`--slice-image: url("${snowPlumHero.src}")`}
+              >
+                <div class="article-slice-content">
+                  <div>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
+                  </div>
+                  <span class="meta">{formatDate(post.data.pubDate)} <span class="arrow-line">-></span></span>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <aside class="bento-cell bento-tags">
+        <div class="tags-panel">
+          <div>
+            <h2>标签与连接</h2>
+            <div class="tag-list" style="margin-top: 1.4rem;">
+              {
+                topTags.map(({ tag, count }) => (
+                  <a class="tag-link" href={withBase(`/tags/${tagSlug(tag)}/`)}>
+                    <span>{tag}</span>
+                    <span class="meta">{count}</span>
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+          <a class="rss-link" href={withBase("/rss.xml")}>
+            <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 5.5c7.46 0 13.5 6.04 13.5 13.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.3" />
+              <path d="M5 11c4.42 0 8 3.58 8 8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.3" />
+              <circle cx="6.2" cy="18" r="1.8" fill="currentColor" />
+            </svg>
+            RSS 订阅
+          </a>
+        </div>
+      </aside>
+
+      <div class="bento-cell bento-note">
+        <div class="note-panel">
+          <span class="quote-mark" aria-hidden="true">“</span>
+          <h2>读书不是为了记住，而是为了理解世界的更多可能。</h2>
+          <p class="meta">随记</p>
+        </div>
+      </div>
+
+      <div class="bento-cell bento-carousel">
+        <ReadingNotesCarousel notes={notes} client:load />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,53 @@
+---
+import { SITE_TITLE, withBase } from "../lib/site";
+
+const pathname = Astro.url.pathname;
+
+const links = [
+  { href: "/posts/", label: "写作", match: "/posts/" },
+  { href: "/tags/", label: "标签", match: "/tags/" },
+  { href: "/about/", label: "关于", match: "/about/" },
+  { href: "/rss.xml", label: "RSS", match: "/rss.xml", rss: true },
+];
+---
+
+<div class="site-header-wrap">
+  <div class="container">
+    <header class="site-header" aria-label="站点导航">
+      <a class="site-mark" href={withBase("/")}>{SITE_TITLE}</a>
+      <nav class="site-nav" aria-label="主导航">
+        {
+          links.map((link) => (
+            <a
+              href={withBase(link.href)}
+              class:list={{ "is-active": pathname.includes(link.match) }}
+            >
+              {link.label}
+              {
+                link.rss && (
+                  <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M5 5.5c7.46 0 13.5 6.04 13.5 13.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="2.3"
+                    />
+                    <path
+                      d="M5 11c4.42 0 8 3.58 8 8"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="2.3"
+                    />
+                    <circle cx="6.2" cy="18" r="1.8" fill="currentColor" />
+                  </svg>
+                )
+              }
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+---
+import { render } from "astro:content";
+import TagList from "../../components/TagList.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { formatDate, getAllPosts } from "../../lib/posts";
+import { withBase } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const posts = await getAllPosts();
+const index = posts.findIndex((item) => item.id === post.id);
+const newer = index > 0 ? posts[index - 1] : undefined;
+const older = index >= 0 && index < posts.length - 1 ? posts[index + 1] : undefined;
+const { Content, headings } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} canonicalPath={`/posts/${post.id}/`}>
+  <div class="container">
+    <article class="article-shell">
+      <div class="article-main">
+        <h1 class="article-title">{post.data.title}</h1>
+        <div class="article-meta">
+          <time class="meta" datetime={post.data.pubDate.toISOString()}>
+            发布于 {formatDate(post.data.pubDate)}
+          </time>
+          {
+            post.data.updatedDate && (
+              <time class="meta" datetime={post.data.updatedDate.toISOString()}>
+                更新于 {formatDate(post.data.updatedDate)}
+              </time>
+            )
+          }
+          <TagList tags={post.data.tags} />
+        </div>
+        <div class="article-content">
+          <Content />
+        </div>
+        <nav class="article-nav" aria-label="文章导航">
+          {
+            newer ? (
+              <a href={withBase(`/posts/${newer.id}/`)}>
+                <span class="meta">上一篇</span>
+                <strong>{newer.data.title}</strong>
+              </a>
+            ) : (
+              <span></span>
+            )
+          }
+          {
+            older ? (
+              <a href={withBase(`/posts/${older.id}/`)}>
+                <span class="meta">下一篇</span>
+                <strong>{older.data.title}</strong>
+              </a>
+            ) : (
+              <span></span>
+            )
+          }
+        </nav>
+      </div>
+      <aside class="article-rail" aria-label="文章信息">
+        <h2>文章信息</h2>
+        <p class="meta">{formatDate(post.data.pubDate)}</p>
+        <TagList tags={post.data.tags} />
+        {
+          headings.length > 0 && (
+            <div style="margin-top: 2rem;">
+              <h2>目录</h2>
+              <nav>
+                {headings
+                  .filter((heading) => heading.depth === 2 || heading.depth === 3)
+                  .slice(0, 8)
+                  .map((heading) => (
+                    <a class="tag-link" href={`#${heading.slug}`} style="margin: 0.25rem 0;">
+                      {heading.text}
+                    </a>
+                  ))}
+              </nav>
+            </div>
+          )
+        }
+      </aside>
+    </article>
+  </div>
+</BaseLayout>
