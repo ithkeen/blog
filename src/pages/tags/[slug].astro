@@ -1,0 +1,38 @@
+---
+import PostList from "../../components/PostList.astro";
+import TagList from "../../components/TagList.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllPosts, getPostsByTag, getTagCounts } from "../../lib/posts";
+import { tagSlug } from "../../lib/site";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const tags = getTagCounts(posts);
+  return tags.map(({ tag }) => ({
+    params: { slug: tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = await getAllPosts();
+const filteredPosts = getPostsByTag(posts, tag);
+const tags = getTagCounts(posts).map((item) => item.tag);
+---
+
+<BaseLayout title={`标签：${tag}`} description={`浏览标签「${tag}」下的文章。`} canonicalPath={`/tags/${tagSlug(tag)}/`}>
+  <section class="archive-head">
+    <div class="container">
+      <h1 class="page-title">{tag}</h1>
+      <p class="lede">与「{tag}」相关的文章，按发布时间由近及远排列。</p>
+      <div class="archive-filters">
+        <TagList tags={tags} activeTag={tag} />
+      </div>
+    </div>
+  </section>
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <PostList posts={filteredPosts} />
+    </div>
+  </section>
+</BaseLayout>

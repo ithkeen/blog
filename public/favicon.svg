@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="plum mark">
+  <rect width="64" height="64" rx="18" fill="#f7fafc"/>
+  <path d="M18 44c12-7 20-18 30-28" fill="none" stroke="#172026" stroke-width="3" stroke-linecap="round"/>
+  <g fill="#b92d29">
+    <circle cx="22" cy="37" r="5"/>
+    <circle cx="29" cy="31" r="4"/>
+    <circle cx="37" cy="24" r="5"/>
+    <circle cx="43" cy="18" r="3.6"/>
+  </g>
+  <g fill="#fff" opacity=".82">
+    <circle cx="22" cy="37" r="1.5"/>
+    <circle cx="37" cy="24" r="1.4"/>
+  </g>
+</svg>

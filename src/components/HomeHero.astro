@@ -1,0 +1,14 @@
+---
+import { withBase } from "../lib/site";
+---
+
+<section class="hero" aria-labelledby="home-title">
+  <div class="hero-inner">
+    <h1 id="home-title">ithkeen 的博客</h1>
+    <p>记录技术、写作和日常思考。</p>
+    <div class="button-row" aria-label="首页操作">
+      <a class="button button-primary" href={withBase("/posts/")}>全部文章</a>
+      <a class="button button-secondary" href={withBase("/about/")}>关于</a>
+    </div>
+  </div>
+</section>

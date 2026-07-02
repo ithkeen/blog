@@ -1,0 +1,26 @@
+---
+import PostList from "../../components/PostList.astro";
+import TagList from "../../components/TagList.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllPosts, getTagCounts } from "../../lib/posts";
+
+const posts = await getAllPosts();
+const tags = getTagCounts(posts).map(({ tag }) => tag);
+---
+
+<BaseLayout title="全部文章" description="ithkeen 的博客文章索引。" canonicalPath="/posts/">
+  <section class="archive-head">
+    <div class="container">
+      <h1 class="page-title">全部文章</h1>
+      <p class="lede">一条按时间铺开的写作路径。技术、系统、阅读与日常思考，在这里留下清晰的脚印。</p>
+      <div class="archive-filters">
+        <TagList tags={tags} />
+      </div>
+    </div>
+  </section>
+  <section class="section-pad" style="padding-top: 0;">
+    <div class="container">
+      <PostList posts={posts} />
+    </div>
+  </section>
+</BaseLayout>

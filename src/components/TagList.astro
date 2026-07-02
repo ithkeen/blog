@@ -1,0 +1,24 @@
+---
+import { tagSlug, withBase } from "../lib/site";
+
+type Props = {
+  tags: string[];
+  activeTag?: string;
+};
+
+const { tags, activeTag } = Astro.props;
+---
+
+<div class="tag-list">
+  {
+    tags.map((tag) => (
+      <a
+        class:list={["tag-link", { "is-active": tag === activeTag }]}
+        href={withBase(`/tags/${tagSlug(tag)}/`)}
+        aria-current={tag === activeTag ? "page" : undefined}
+      >
+        {tag}
+      </a>
+    ))
+  }
+</div>

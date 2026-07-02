@@ -1,0 +1,36 @@
+---
+import TagList from "./TagList.astro";
+import { formatDate, type BlogPost } from "../lib/posts";
+import { withBase } from "../lib/site";
+
+type Props = {
+  posts: BlogPost[];
+  headingLevel?: "h2" | "h3";
+};
+
+const { posts, headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+---
+
+{
+  posts.length === 0 ? (
+    <p class="empty-state">还没有发布的文章。</p>
+  ) : (
+    <div class="post-list">
+      {posts.map((post) => (
+        <article class="post-row">
+          <time class="meta" datetime={post.data.pubDate.toISOString()}>
+            {formatDate(post.data.pubDate)}
+          </time>
+          <div>
+            <a href={withBase(`/posts/${post.id}/`)}>
+              <Heading>{post.data.title}</Heading>
+            </a>
+            <p>{post.data.description}</p>
+            <TagList tags={post.data.tags} />
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}

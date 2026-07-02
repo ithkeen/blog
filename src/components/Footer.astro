@@ -1,0 +1,27 @@
+---
+import { SITE_TITLE, withBase } from "../lib/site";
+---
+
+<footer class="footer-cta">
+  <div class="container">
+    <div class="footer-card">
+      <div>
+        <h2>继续阅读，<span style="color: var(--plum);">沿雪寻梅。</span></h2>
+        <p class="lede">让思考在文字中延续，让时间在阅读中沉淀。</p>
+      </div>
+      <div class="button-row">
+        <a class="button button-primary" href={withBase("/posts/")}>继续阅读</a>
+        <a class="button button-secondary" href={withBase("/rss.xml")}>订阅 RSS</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>{SITE_TITLE}</span>
+      <nav class="footer-links" aria-label="页脚导航">
+        <a href={withBase("/posts/")}>写作</a>
+        <a href={withBase("/tags/")}>标签</a>
+        <a href={withBase("/about/")}>关于</a>
+        <a href={withBase("/rss.xml")}>RSS</a>
+      </nav>
+    </div>
+  </div>
+</footer>
