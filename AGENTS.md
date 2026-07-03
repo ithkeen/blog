@@ -10,6 +10,12 @@
 
 The site is configured as a GitHub Pages project site under `/blog/`. Use `http://localhost:4321/blog/` during local review.
 
+## GitHub and Sandbox Notes
+
+- In the managed sandbox, `gh auth status` can incorrectly report that the GitHub token is invalid because the sandbox cannot access the host keyring. Before asking the user to re-authenticate, rerun `gh auth status` with elevated permissions outside the sandbox.
+- Git operations that contact GitHub can also fail in the sandbox with network or SSH errors such as `Operation not permitted`. If the same action is required for the task, retry it with elevated permissions instead of treating it as an authentication failure.
+- If the GitHub connector returns `403 Resource not accessible by integration` when creating a PR, fall back to `gh pr create` with elevated permissions. The connector may not have write access even when the local GitHub CLI is authenticated.
+
 ## Project Shape
 
 - Blog content lives in `src/content/blog/`.

@@ -1,6 +1,7 @@
 ---
 import TagList from "./TagList.astro";
 import { formatDate, type BlogPost } from "../lib/posts";
+import { getPostVisual } from "../lib/postVisuals";
 import { withBase } from "../lib/site";
 
 type Props = {
@@ -17,20 +18,35 @@ const Heading = headingLevel;
     <p class="empty-state">还没有发布的文章。</p>
   ) : (
     <div class="post-list">
-      {posts.map((post) => (
-        <article class="post-row">
-          <time class="meta" datetime={post.data.pubDate.toISOString()}>
-            {formatDate(post.data.pubDate)}
-          </time>
-          <div>
-            <a href={withBase(`/posts/${post.id}/`)}>
-              <Heading>{post.data.title}</Heading>
-            </a>
-            <p>{post.data.description}</p>
-            <TagList tags={post.data.tags} />
-          </div>
-        </article>
-      ))}
+      {
+        posts.map((post) => {
+          const visual = getPostVisual(post.id);
+          return (
+            <article class="post-row">
+              <a class="post-row-thumb" href={withBase(`/posts/${post.id}/`)} aria-label={`阅读文章：${post.data.title}`}>
+                <img
+                  src={visual.image.src}
+                  width={visual.image.width}
+                  height={visual.image.height}
+                  alt={visual.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <time class="meta" datetime={post.data.pubDate.toISOString()}>
+                {formatDate(post.data.pubDate)}
+              </time>
+              <div class="post-row-copy">
+                <a href={withBase(`/posts/${post.id}/`)}>
+                  <Heading>{post.data.title}</Heading>
+                </a>
+                <p>{post.data.description}</p>
+                <TagList tags={post.data.tags} />
+              </div>
+            </article>
+          );
+        })
+      }
     </div>
   )
 }
