@@ -3,7 +3,6 @@ import complexityOrder from "../assets/post-complexity-order.webp";
 import knowledgeSystem from "../assets/post-knowledge-system.webp";
 import longTermEngineering from "../assets/post-long-term-engineering.webp";
 import writingDialogue from "../assets/post-writing-dialogue.webp";
-import snowPlumHero from "../assets/snow-plum-hero.png";
 
 type PostImage = typeof codexWorkspace;
 
@@ -36,8 +35,8 @@ const visuals: Record<string, PostVisual> = {
 };
 
 const fallbackVisual: PostVisual = {
-  image: snowPlumHero,
-  alt: "雪白背景中的梅花枝。",
+  image: knowledgeSystem,
+  alt: "雪白桌面上的卡片、透明收纳盒和连接线，象征写作中的知识整理。",
 };
 
 export function getPostVisual(postId: string) {

@@ -13,6 +13,8 @@
   --paper-strong: rgba(255, 255, 255, 0.94);
   --hairline: rgba(23, 32, 38, 0.16);
   --shadow: 0 24px 80px rgba(63, 75, 83, 0.14);
+  --frost-line: rgba(108, 130, 145, 0.18);
+  --frost-veil: rgba(255, 255, 255, 0.58);
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -69,6 +71,17 @@ body::after {
     radial-gradient(circle at 60% 72%, rgba(255, 255, 255, 0.9), transparent 28rem);
 }
 
+.snowfall-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.7;
+  filter: drop-shadow(0 0 2px rgba(108, 130, 145, 0.2));
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -95,6 +108,8 @@ button {
 }
 
 .container {
+  position: relative;
+  z-index: 20;
   width: min(var(--max), calc(100vw - 32px));
   margin-inline: auto;
 }
@@ -291,9 +306,10 @@ button {
   padding: clamp(7.5rem, 14vw, 10rem) 0 clamp(3.5rem, 7vw, 5rem);
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(247, 250, 252, 0.38) 0%, rgba(247, 250, 252, 0.82) 78%, var(--snow) 100%),
+    radial-gradient(circle at 78% 22%, rgba(185, 45, 41, 0.14), transparent 11rem),
+    radial-gradient(circle at 24% 64%, rgba(255, 255, 255, 0.96), transparent 18rem),
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.38) 26rem, transparent 40rem),
-    url("../assets/snow-plum-hero.png") center / cover;
+    linear-gradient(118deg, #fbfdff 0%, #eef6fa 48%, #ffffff 100%);
 }
 
 .hero::before {
@@ -301,29 +317,35 @@ button {
   inset: 0;
   content: "";
   background:
-    radial-gradient(circle at 74% 26%, rgba(185, 45, 41, 0.2), transparent 10rem),
-    linear-gradient(112deg, rgba(247, 250, 252, 0.92), rgba(247, 250, 252, 0.42), rgba(247, 250, 252, 0.88));
-  mix-blend-mode: screen;
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(226, 239, 246, 0.18)) 10% 24% / min(42vw, 460px) min(34vw, 330px) no-repeat,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.56), rgba(224, 237, 245, 0.22)) 84% 58% / min(36vw, 410px) min(24vw, 280px) no-repeat,
+    radial-gradient(circle at 72% 30%, rgba(255, 255, 255, 0.88), transparent 13rem),
+    linear-gradient(112deg, rgba(247, 250, 252, 0.9), rgba(247, 250, 252, 0.26), rgba(247, 250, 252, 0.76));
+  opacity: 0.92;
 }
 
 .hero::after {
   position: absolute;
-  right: max(-8rem, -8vw);
-  bottom: 4rem;
-  width: min(44vw, 520px);
-  aspect-ratio: 1.35;
+  top: clamp(7.5rem, 15vw, 10rem);
+  right: max(-7rem, -9vw);
+  width: min(62vw, 760px);
+  height: min(34vw, 360px);
   content: "";
-  background: url("../assets/snow-plum-hero.png") right center / cover;
-  border-radius: 42% 58% 48% 52%;
-  filter: grayscale(0.25) contrast(1.12) saturate(0.72);
-  opacity: 0.48;
-  transform: rotate(-5deg);
-  mask-image: radial-gradient(circle, #000 42%, transparent 72%);
+  background:
+    radial-gradient(circle at 54% 38%, var(--plum) 0 6px, transparent 7px),
+    radial-gradient(circle at 66% 28%, var(--plum) 0 5px, transparent 6px),
+    radial-gradient(circle at 76% 46%, var(--plum-deep) 0 5px, transparent 6px),
+    radial-gradient(circle at 86% 34%, rgba(185, 45, 41, 0.74) 0 4px, transparent 5px),
+    linear-gradient(161deg, transparent 49.1%, rgba(23, 32, 38, 0.52) 49.35%, rgba(23, 32, 38, 0.52) 49.75%, transparent 50%),
+    linear-gradient(192deg, transparent 51%, rgba(23, 32, 38, 0.34) 51.28%, rgba(23, 32, 38, 0.34) 51.68%, transparent 52%);
+  opacity: 0.62;
+  transform: rotate(-4deg);
+  mask-image: radial-gradient(ellipse at 64% 42%, #000 28%, transparent 74%);
 }
 
 .hero-inner {
   position: relative;
-  z-index: 1;
+  z-index: 20;
   display: grid;
   justify-items: center;
   width: min(1120px, calc(100vw - 48px));
@@ -355,14 +377,20 @@ button {
 }
 
 .inline-image {
+  position: relative;
   display: inline-block;
   width: clamp(4.7rem, 9vw, 7rem);
   height: clamp(2rem, 4vw, 3rem);
   margin: 0 0.35rem;
-  border: 1px solid rgba(185, 45, 41, 0.2);
+  overflow: hidden;
+  border: 1px solid rgba(185, 45, 41, 0.18);
   border-radius: 999px;
-  background: url("../assets/snow-plum-hero.png") right center / cover;
-  filter: grayscale(0.1) contrast(1.08) saturate(0.82);
+  background:
+    radial-gradient(circle at 76% 35%, rgba(185, 45, 41, 0.58) 0 4px, transparent 5px),
+    radial-gradient(circle at 86% 58%, rgba(143, 31, 28, 0.5) 0 3px, transparent 4px),
+    linear-gradient(160deg, transparent 48%, rgba(23, 32, 38, 0.28) 48.4%, rgba(23, 32, 38, 0.28) 49%, transparent 49.4%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(224, 237, 245, 0.62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
   vertical-align: middle;
 }
 
@@ -852,15 +880,34 @@ button {
 }
 
 .stack-card {
+  position: relative;
   min-height: 150px;
+  overflow: hidden;
   padding: clamp(1rem, 3vw, 1.6rem);
-  border: 1px solid rgba(23, 32, 38, 0.14);
+  border: 1px solid rgba(23, 32, 38, 0.12);
   border-radius: var(--radius-md);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(239, 245, 248, 0.86)),
-    url("../assets/snow-plum-hero.png") center / cover;
+    radial-gradient(circle at 82% 18%, rgba(185, 45, 41, 0.12), transparent 6rem),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(236, 246, 250, 0.84));
   box-shadow: 0 16px 38px rgba(63, 75, 83, 0.1);
   will-change: transform;
+}
+
+.stack-card::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(226, 239, 246, 0.12)) 72% 18% / 46% 74% no-repeat,
+    linear-gradient(158deg, transparent 58%, rgba(23, 32, 38, 0.12) 58.35%, rgba(23, 32, 38, 0.12) 58.75%, transparent 59%),
+    radial-gradient(circle at 84% 30%, rgba(185, 45, 41, 0.56) 0 4px, transparent 5px);
+  opacity: 0.78;
+}
+
+.stack-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .stack-card h3 {
@@ -882,6 +929,8 @@ button {
 }
 
 .reveal-copy {
+  position: relative;
+  z-index: 20;
   width: min(1020px, calc(100vw - 32px));
   margin: 0 auto;
   color: var(--ink);
@@ -896,11 +945,26 @@ button {
 }
 
 .footer-cta {
+  position: relative;
+  overflow: hidden;
   padding: clamp(5rem, 11vw, 9rem) 0 3rem;
   border-top: 1px solid var(--hairline);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(234, 241, 246, 0.72)),
-    url("../assets/snow-plum-hero.png") center / cover;
+    radial-gradient(circle at 78% 18%, rgba(185, 45, 41, 0.1), transparent 14rem),
+    radial-gradient(circle at 24% 72%, rgba(255, 255, 255, 0.9), transparent 18rem),
+    linear-gradient(118deg, rgba(255, 255, 255, 0.96), rgba(234, 243, 248, 0.82));
+}
+
+.footer-cta::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.52), rgba(226, 239, 246, 0.12)) 8% 18% / min(34vw, 420px) 48% no-repeat,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(226, 239, 246, 0.1)) 86% 44% / min(32vw, 380px) 40% no-repeat,
+    linear-gradient(164deg, transparent 64%, rgba(23, 32, 38, 0.12) 64.25%, rgba(23, 32, 38, 0.12) 64.65%, transparent 65%);
+  opacity: 0.86;
 }
 
 .footer-card {
@@ -953,13 +1017,51 @@ button {
 }
 
 .about-image {
+  position: relative;
   min-height: 420px;
+  overflow: hidden;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-md);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(247, 250, 252, 0.82)),
-    url("../assets/snow-plum-hero.png") center / cover;
-  filter: grayscale(0.12) contrast(1.08) saturate(0.82);
+    radial-gradient(circle at 78% 18%, rgba(185, 45, 41, 0.14), transparent 8rem),
+    radial-gradient(circle at 24% 68%, rgba(255, 255, 255, 0.9), transparent 12rem),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.96), rgba(230, 241, 247, 0.78));
+  box-shadow: 0 28px 90px rgba(75, 91, 104, 0.14);
+}
+
+.about-image::before,
+.about-image::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+}
+
+.about-image::before {
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(224, 237, 245, 0.18)) 12% 18% / 48% 58% no-repeat,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.48), rgba(224, 237, 245, 0.16)) 78% 56% / 44% 40% no-repeat,
+    radial-gradient(circle at 16% 20%, rgba(255, 255, 255, 0.96) 0 3px, transparent 4px),
+    radial-gradient(circle at 40% 32%, rgba(215, 225, 232, 0.84) 0 2px, transparent 3px),
+    radial-gradient(circle at 66% 22%, rgba(255, 255, 255, 0.92) 0 3px, transparent 4px);
+  background-size: auto, auto, 8rem 7rem, 7rem 9rem, 10rem 8rem;
+  opacity: 0.9;
+}
+
+.about-image::after {
+  top: 28%;
+  right: -14%;
+  width: 80%;
+  height: 44%;
+  background:
+    radial-gradient(circle at 52% 38%, var(--plum) 0 7px, transparent 8px),
+    radial-gradient(circle at 65% 22%, var(--plum) 0 6px, transparent 7px),
+    radial-gradient(circle at 78% 48%, var(--plum-deep) 0 5px, transparent 6px),
+    linear-gradient(164deg, transparent 49%, rgba(23, 32, 38, 0.5) 49.35%, rgba(23, 32, 38, 0.5) 49.8%, transparent 50.1%),
+    linear-gradient(194deg, transparent 52%, rgba(23, 32, 38, 0.32) 52.28%, rgba(23, 32, 38, 0.32) 52.68%, transparent 53%);
+  opacity: 0.72;
+  transform: rotate(-5deg);
+  mask-image: radial-gradient(ellipse at 62% 46%, #000 30%, transparent 76%);
 }
 
 @media (max-width: 980px) {
@@ -1147,5 +1249,9 @@ button {
 
   .reveal-word {
     opacity: 1;
+  }
+
+  .snowfall-canvas {
+    display: none;
   }
 }
